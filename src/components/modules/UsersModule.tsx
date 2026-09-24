@@ -40,7 +40,7 @@ export const UsersModule: React.FC = () => {
   const securitySettings = state.securitySettings || { passwordPolicy: defaultPasswordPolicy };
   const auditLogs = state.auditLogs || [];
 
-  const [activeTab, setActiveTab] = useState<'directory' | 'sessions' | 'history' | 'security'>('directory');
+  const [activeTab, setActiveTab] = useState<'directory' | 'sessions' | 'history' | 'security' | 'permissions'>('directory');
   const [searchTerm, setSearchTerm] = useState('');
   const [roleFilter, setRoleFilter] = useState<string>('ALL');
   const [statusFilter, setStatusFilter] = useState<string>('ALL');
@@ -230,6 +230,15 @@ export const UsersModule: React.FC = () => {
         >
           <Settings className="w-4 h-4" />
           <span>Password Policy & Lockout Settings</span>
+        </button>
+        <button
+          onClick={() => setActiveTab('permissions')}
+          className={`pb-3 text-sm font-semibold flex items-center space-x-2 border-b-2 transition-all cursor-pointer ${
+            activeTab === 'permissions' ? 'border-blue-600 text-blue-600' : 'border-transparent text-slate-500 hover:text-slate-900'
+          }`}
+        >
+          <KeyRound className="w-4 h-4" />
+          <span>RBAC Permissions</span>
         </button>
       </div>
 
@@ -674,6 +683,18 @@ export const UsersModule: React.FC = () => {
             </button>
           </div>
         </form>
+      )}
+
+      {/* Tab 5: RBAC Permissions */}
+      {activeTab === 'permissions' && (
+        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+          <h2 className="text-lg font-bold text-slate-900">RBAC Permissions Management</h2>
+          <p className="text-sm text-slate-500">Configure granular module-level permissions for enterprise users.</p>
+          <div className="pt-4 text-center py-12 text-slate-500">
+            <KeyRound className="w-12 h-12 text-slate-300 mx-auto mb-4" />
+            Feature under construction: Granular module-level permission editing interface will be here.
+          </div>
+        </div>
       )}
 
       {/* --- Modal: Create User Account --- */}

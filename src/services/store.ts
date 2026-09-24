@@ -360,7 +360,7 @@ class ERPStore {
 
   public logAudit(action: string, module: string, entityId: string, details: string, result: 'SUCCESS' | 'FAILURE' = 'SUCCESS') {
     const newLog: AuditLog = {
-      id: `aud-${Date.now()}`,
+      id: `aud-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
       user: this.state.currentUser.name,
       role: this.state.currentUser.role,
       action,
@@ -375,7 +375,7 @@ class ERPStore {
 
   public addNotification(title: string, message: string, type: 'info' | 'success' | 'warning' | 'error', module: string) {
     const notif: AppNotification = {
-      id: `notif-${Date.now()}`,
+      id: `notif-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
       title,
       message,
       time: 'Just now',
