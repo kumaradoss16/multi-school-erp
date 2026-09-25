@@ -1,17 +1,303 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: 'Plus Jakarta Sans', Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-sans: var(--erp-font, 'Plus Jakarta Sans', Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  
+  /* Redefine primary dynamic color systems mapped to blue and indigo */
+  --color-blue-50: color-mix(in srgb, var(--erp-primary, #2563eb) 8%, white);
+  --color-blue-100: color-mix(in srgb, var(--erp-primary, #2563eb) 15%, white);
+  --color-blue-200: color-mix(in srgb, var(--erp-primary, #2563eb) 30%, white);
+  --color-blue-500: var(--erp-primary, #2563eb);
+  --color-blue-600: var(--erp-primary, #2563eb);
+  --color-blue-700: color-mix(in srgb, var(--erp-primary, #2563eb) 85%, black);
+  --color-blue-800: color-mix(in srgb, var(--erp-primary, #2563eb) 70%, black);
+
+  --color-indigo-50: color-mix(in srgb, var(--erp-primary, #2563eb) 8%, white);
+  --color-indigo-100: color-mix(in srgb, var(--erp-primary, #2563eb) 15%, white);
+  --color-indigo-200: color-mix(in srgb, var(--erp-primary, #2563eb) 30%, white);
+  --color-indigo-500: var(--erp-primary, #2563eb);
+  --color-indigo-600: var(--erp-primary, #2563eb);
+  --color-indigo-700: color-mix(in srgb, var(--erp-primary, #2563eb) 85%, black);
+  --color-indigo-800: color-mix(in srgb, var(--erp-primary, #2563eb) 70%, black);
+
+  /* Redefine accent dynamic color system mapped to emerald */
+  --color-emerald-50: color-mix(in srgb, var(--erp-accent, #10b981) 8%, white);
+  --color-emerald-100: color-mix(in srgb, var(--erp-accent, #10b981) 15%, white);
+  --color-emerald-500: var(--erp-accent, #10b981);
+  --color-emerald-600: var(--erp-accent, #10b981);
+  --color-emerald-700: color-mix(in srgb, var(--erp-accent, #10b981) 85%, black);
 }
 
 @layer base {
   body {
-    font-family: 'Plus Jakarta Sans', Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: var(--erp-font, 'Plus Jakarta Sans', Inter, sans-serif);
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
   
   .font-mono-tech {
     font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+/* --- Color Theme Presets Mapping --- */
+.theme-blue {
+  --erp-primary: #2563eb;
+  --erp-secondary: #1e293b;
+  --erp-accent: #10b981;
+  --erp-sidebar-bg: #121c2d;
+  --erp-sidebar-text: #e2e8f0;
+}
+.theme-emerald {
+  --erp-primary: #059669;
+  --erp-secondary: #0f172a;
+  --erp-accent: #3b82f6;
+  --erp-sidebar-bg: #064e3b;
+  --erp-sidebar-text: #ecfdf5;
+}
+.theme-violet {
+  --erp-primary: #7c3aed;
+  --erp-secondary: #1e1b4b;
+  --erp-accent: #f43f5e;
+  --erp-sidebar-bg: #1e1b4b;
+  --erp-sidebar-text: #f5f3ff;
+}
+.theme-rose {
+  --erp-primary: #e11d48;
+  --erp-secondary: #31101d;
+  --erp-accent: #fbbf24;
+  --erp-sidebar-bg: #2d0612;
+  --erp-sidebar-text: #fff1f2;
+}
+.theme-orange {
+  --erp-primary: #ea580c;
+  --erp-secondary: #2d1610;
+  --erp-accent: #06b6d4;
+  --erp-sidebar-bg: #3c1e15;
+  --erp-sidebar-text: #fff7ed;
+}
+.theme-slate {
+  --erp-primary: #475569;
+  --erp-secondary: #0f172a;
+  --erp-accent: #3b82f6;
+  --erp-sidebar-bg: #1e293b;
+  --erp-sidebar-text: #f1f5f9;
+}
+
+/* --- Border Radius Overrides --- */
+.radius-sharp * {
+  border-radius: 0px !important;
+  --erp-radius: 0px !important;
+}
+.radius-rounded {
+  --erp-radius: 8px !important;
+}
+.radius-soft .rounded-xl, 
+.radius-soft .rounded-2xl {
+  border-radius: 1.25rem !important;
+}
+.radius-soft .rounded-lg,
+.radius-soft .rounded-md {
+  border-radius: 0.85rem !important;
+}
+
+/* --- Font Size Scaling --- */
+.font-scale-small {
+  font-size: 13.5px !important;
+}
+.font-scale-medium {
+  font-size: 15px !important;
+}
+.font-scale-large {
+  font-size: 16.5px !important;
+}
+
+/* --- Content Density Overrides --- */
+.density-compact {
+  /* Reduce row padding in tables */
+  th, td {
+    padding-top: 0.35rem !important;
+    padding-bottom: 0.35rem !important;
+  }
+  
+  /* Reduce general box padding */
+  .p-6 {
+    padding: 1rem !important;
+  }
+  .p-5 {
+    padding: 0.8rem !important;
+  }
+  .p-4 {
+    padding: 0.7rem !important;
+  }
+  .px-6 {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+  
+  /* Shrink header from 64px to 52px */
+  header.h-16 {
+    height: 3.25rem !important;
+  }
+  
+  /* Compact flex alignments */
+  .space-y-6 > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 1rem !important;
+  }
+  .space-y-5 > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0.75rem !important;
+  }
+}
+
+/* --- Card Style Variations --- */
+.card-flat {
+  /* Cards become flat with subtle background tint */
+  .bg-white.border,
+  .bg-white.rounded-xl,
+  .bg-white.rounded-2xl {
+    border-color: transparent !important;
+    box-shadow: none !important;
+    background-color: color-mix(in srgb, var(--erp-primary, #2563eb) 3%, #f8fafc) !important;
+  }
+}
+.dark.card-flat {
+  .bg-white.border,
+  .bg-white.rounded-xl,
+  .bg-white.rounded-2xl {
+    border-color: transparent !important;
+    box-shadow: none !important;
+    background-color: #1a2230 !important;
+  }
+}
+.card-bordered {
+  .bg-white.border,
+  .bg-white.rounded-xl,
+  .bg-white.rounded-2xl {
+    border-color: #e2e8f0 !important;
+    box-shadow: none !important;
+  }
+}
+.dark.card-bordered {
+  .bg-white.border,
+  .bg-white.rounded-xl,
+  .bg-white.rounded-2xl {
+    border-color: #243042 !important;
+    box-shadow: none !important;
+  }
+}
+.card-elevated {
+  .bg-white.border,
+  .bg-white.rounded-xl,
+  .bg-white.rounded-2xl {
+    border-color: transparent !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.04) !important;
+  }
+}
+.dark.card-elevated {
+  .bg-white.border,
+  .bg-white.rounded-xl,
+  .bg-white.rounded-2xl {
+    border-color: transparent !important;
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.35), 0 8px 15px -6px rgba(0, 0, 0, 0.3) !important;
+  }
+}
+
+/* --- Comprehensive Dark Mode Override System --- */
+.dark {
+  /* Dynamic overrides for cards and layouts to look incredibly polished and native */
+  body, 
+  #root,
+  .bg-\[\#f8fafc\],
+  .bg-slate-50,
+  main,
+  #dashboard-view {
+    background-color: #0b111e !important; /* Premium Obsidian dark mode canvas background */
+    color: #f1f5f9 !important;
+  }
+  
+  .text-slate-900,
+  .text-slate-800,
+  .text-gray-900,
+  .text-slate-950,
+  h1, h2, h3, h4, h5, h6 {
+    color: #f8fafc !important;
+  }
+  
+  .text-slate-600,
+  .text-slate-500,
+  .text-gray-600,
+  .text-slate-700 {
+    color: #94a3b8 !important; /* Clear high-contrast metadata/description text in dark */
+  }
+
+  /* Solid dark mode panels and header */
+  header,
+  .bg-white {
+    background-color: #121c2d !important; /* Premium Obsidian dark surface */
+    color: #f8fafc !important;
+  }
+  
+  /* Solid high-contrast borders and dividers */
+  .border,
+  .border-slate-200,
+  .border-slate-200\/80,
+  .border-slate-100,
+  .border-slate-300\/80,
+  .border-b,
+  .border-t,
+  .border-l,
+  .border-r,
+  hr {
+    border-color: #1e2d42 !important;
+  }
+  
+  /* Sidebar styles override (ensures matching custom or obsidian background) */
+  #app-sidebar {
+    background-color: var(--erp-sidebar-bg, #0b111e) !important;
+    border-color: #1e2d42 !important;
+  }
+
+  /* Elegant dark inputs */
+  input[type="text"],
+  input[type="number"],
+  input[type="search"],
+  input[type="email"],
+  input[type="password"],
+  select,
+  textarea {
+    background-color: #1b2636 !important;
+    color: #f8fafc !important;
+    border-color: #2b3c54 !important;
+  }
+  
+  /* Popups, Dropdowns, and Modals */
+  .bg-white.rounded-2xl,
+  .bg-white.rounded-xl,
+  [class*="modal"] {
+    background-color: #121c2d !important;
+    color: #f8fafc !important;
+    border-color: #1e2d42 !important;
+  }
+  
+  /* Stat/KPI Card containers */
+  .bg-white.rounded-lg,
+  .bg-white.p-5,
+  .bg-white.p-6 {
+    background-color: #121c2d !important;
+    color: #f8fafc !important;
+  }
+  
+  /* General light-gray tags/pills conversion in dark mode */
+  .bg-slate-100 {
+    background-color: #1b2636 !important;
+    color: #94a3b8 !important;
+  }
+  
+  /* Universal hover backgrounds in dark mode lists and dropdowns */
+  .hover\:bg-slate-50:hover,
+  .hover\:bg-slate-100:hover,
+  .hover\:bg-slate-100\/80:hover {
+    background-color: #1b2636 !important;
   }
 }
 

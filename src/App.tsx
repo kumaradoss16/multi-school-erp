@@ -9,6 +9,8 @@ import { RealtimeAlertMonitorModal } from './components/common/RealtimeAlertMoni
 import { AllQuickActionsModal } from './components/common/AllQuickActionsModal';
 import { OfflineStatusBar } from './components/common/OfflineStatusBar';
 import { notificationEngine } from './services/notificationEngine';
+import { useTheme } from './hooks/useTheme';
+import { useERP } from './hooks/useERP';
 
 // Modules
 import { DashboardView } from './components/modules/DashboardView';
@@ -32,8 +34,10 @@ import { CustomizationView } from './components/views/CustomizationView';
 import { UsersModule } from './components/modules/UsersModule';
 
 export default function App() {
+  const { theme, sidebarStyle, setSidebarStyle } = useTheme();
+  const { themes, activeThemeId, store } = useERP();
+  const sidebarCollapsed = sidebarStyle === 'collapsed' || sidebarStyle === 'mini';
   const [activeModule, setActiveModule] = useState<ERPModule>('dashboard');
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isAlertMonitorOpen, setIsAlertMonitorOpen] = useState(false);
   const [isQuickActionsModalOpen, setIsQuickActionsModalOpen] = useState(false);
@@ -49,6 +53,14 @@ export default function App() {
   // Ensure diagnostic alerts are synchronized on start
   useEffect(() => {
     notificationEngine.runDiagnosticScan(false);
+  }, []);
+
+  // Synchronize stored brand theme token colors on startup
+  useEffect(() => {
+    const activeTheme = themes.find(t => t.id === activeThemeId);
+    if (activeTheme) {
+      store.setActiveTheme(activeThemeId);
+    }
   }, []);
 
   // Global Keyboard Shortcut Handler for Power Users
@@ -110,7 +122,7 @@ export default function App() {
       // 5. Ctrl/Cmd + B -> Toggle Sidebar
       if (modifier && !e.shiftKey && (e.key === 'b' || e.key === 'B')) {
         e.preventDefault();
-        setSidebarCollapsed(prev => !prev);
+        setSidebarStyle(sidebarStyle === 'expanded' ? 'collapsed' : 'expanded');
         return;
       }
 
@@ -259,7 +271,7 @@ export default function App() {
           <OfflineStatusBar />
           {/* Top Application Header */}
           <Header
-            onToggleSidebar={() => setSidebarCollapsed(!sidebarCollapsed)}
+            onToggleSidebar={() => setSidebarStyle(sidebarStyle === 'expanded' ? 'collapsed' : 'expanded')}
             onOpenSearch={() => setIsSearchOpen(true)}
             onSelectModule={handleSelectModule}
             onOpenAlerts={() => setIsAlertMonitorOpen(true)}
