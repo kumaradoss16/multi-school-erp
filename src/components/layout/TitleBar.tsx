@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Minus, Square, X, Shield, RefreshCw } from 'lucide-react';
+import { Minus, Square, X, Shield, RefreshCw, Sun, Moon, Laptop } from 'lucide-react';
 import { useERP } from '../../hooks/useERP';
+import { useTheme } from '../../hooks/useTheme';
 import { Role } from '../../types';
 
 interface TitleBarProps {
@@ -10,8 +11,21 @@ interface TitleBarProps {
 
 export const TitleBar: React.FC<TitleBarProps> = ({ onSearchClick, activeModule }) => {
   const { currentUser, schoolProfile, store } = useERP();
+  const { theme, setTheme } = useTheme();
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showRoleSelector, setShowRoleSelector] = useState(false);
+
+  const toggleTheme = () => {
+    if (theme === 'light') setTheme('dark');
+    else if (theme === 'dark') setTheme('system');
+    else setTheme('light');
+  };
+
+  const getThemeIcon = () => {
+    if (theme === 'light') return <Sun className="w-3.5 h-3.5" />;
+    if (theme === 'dark') return <Moon className="w-3.5 h-3.5" />;
+    return <Laptop className="w-3.5 h-3.5" />;
+  };
 
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
@@ -102,6 +116,13 @@ export const TitleBar: React.FC<TitleBarProps> = ({ onSearchClick, activeModule 
 
       {/* Right: Window Controls */}
       <div className="flex items-center space-x-1">
+        <button 
+          onClick={toggleTheme}
+          className="w-7 h-6 flex items-center justify-center hover:bg-slate-700 rounded text-slate-400 hover:text-white transition"
+          title={`Switch Theme (Current: ${theme})`}
+        >
+          {getThemeIcon()}
+        </button>
         <button 
           onClick={handleMinimize}
           className="w-7 h-6 flex items-center justify-center hover:bg-slate-700 rounded text-slate-400 hover:text-white transition"

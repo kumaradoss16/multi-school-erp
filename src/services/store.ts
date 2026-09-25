@@ -397,6 +397,23 @@ class ERPStore {
     this.notify();
   }
 
+  public async fetchStudents() {
+    try {
+      const response = await fetch('/api/students', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+      if (response.ok) {
+        const students = await response.json();
+        this.state.students = students;
+        this.notify();
+      }
+    } catch (err) {
+      console.error('Failed to fetch students:', err);
+    }
+  }
+
   public dismissNotification(id: string) {
     this.state.notifications = this.state.notifications.filter(n => n.id !== id);
     this.notify();

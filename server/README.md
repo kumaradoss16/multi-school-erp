@@ -2,7 +2,7 @@
 
 ## Authentication & Tenant Scoping Middleware
 
-The `authenticateAndScope` middleware (`server/middleware/auth.ts`) handles JWT validation and tenant scoping.
+The `authenticationMiddleware` middleware (`server/middleware/auth.ts`) handles JWT validation and tenant scoping.
 
 ### Usage Pattern
 
@@ -10,12 +10,12 @@ When defining API routes, apply the middleware to ensure the request is authenti
 
 ```typescript
 import express from 'express';
-import { authenticateAndScope } from './middleware/auth';
+import { authenticationMiddleware } from './middleware/auth';
 import { db } from './db'; // Assume Drizzle or similar ORM
 
 const router = express.Router();
 
-router.get('/students', authenticateAndScope, async (req, res) => {
+router.get('/students', authenticationMiddleware, async (req, res) => {
   // The middleware ensures req.user.schoolId is present.
   // ALWAYS scope queries by schoolId to prevent cross-tenant leaks.
   const students = await db.select()
@@ -27,4 +27,4 @@ router.get('/students', authenticateAndScope, async (req, res) => {
 ```
 
 ### Critical Security Reminder
-**Never** trust `schoolId` passed in the request body or query parameters for authorization. Always derive the tenant scope (`schoolId`) from the validated `req.user` object populated by `authenticateAndScope`.
+**Never** trust `schoolId` passed in the request body or query parameters for authorization. Always derive the tenant scope (`schoolId`) from the validated `req.user` object populated by `authenticationMiddleware`.

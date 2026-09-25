@@ -15,7 +15,15 @@ declare global {
   }
 }
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-fallback-secret-key-replace-in-production';
+const JWT_SECRET = process.env.JWT_SECRET || (process.env.NODE_ENV === 'production' ? '' : 'dev-only-insecure-secret');
+
+if (!JWT_SECRET) {
+  throw new Error('JWT_SECRET environment variable is required and must not use a default value.');
+}
+
+if (process.env.NODE_ENV !== 'production') {
+  console.warn('WARNING: Using insecure default JWT_SECRET for development.');
+}
 
 export const authenticationMiddleware = (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization;
